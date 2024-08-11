@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  
+  web:
+    image: sec4cyber/cloudefender-soc-server
+    volumes:
+      - db-data:/var/lib/postgresql
+    expose:
+      - 8000
+
+    environment:
+      - EMAIL_HOST_USER=''
+      - EMAIL_HOST_PASSWORD=''
+      - IP_SERVER='' 
+      - EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+      - EMAIL_HOST=''
+      - EMAIL_PORT=''
+      - saas_connector=''
+    
+
+  nginx:  # Nginx container
+    image: sec4cyber/cloudefender-forntand-server 
+    ports:
+      - 443:443
+   
+    depends_on:
+      - web
+   
+  
+volumes:
+  db-data:
+    driver: local
